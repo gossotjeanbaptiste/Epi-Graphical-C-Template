@@ -14,9 +14,15 @@ start :
 
 libmy.a:
 		cd lib/my && make
-		cd ../my_graphical && make
+		cd ../.. 
+		cd lib/my_graphical && make
 		make clean
-		echo "libmy.a has been compiled."
+		echo "libmy.a and libmy_graphical.a has been compiled."
+
+compile:
+		gcc -o project *.c -I include/ -L ./ -lmy -lmy_graphical \
+		-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
+		-lcsfml-network
 
 clean:
 		cd lib/my && make clean
@@ -25,8 +31,10 @@ clean:
 fclean: clean
 		rm -f a.out
 		rm -f $(NAME)
+		rm -f libmy_graphical.a
 		rm -f *~
 		rm -f lib/my/libmy.a
+		rm -f lib/my_graphical/libmy_graphical.a
 		rm -f lib/my/*.o
 		rm -f lib/my/*~
 		rm -f coding-style-reports.log
