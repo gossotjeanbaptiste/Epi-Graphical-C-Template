@@ -5,7 +5,8 @@
 ## compiles libmy
 ##
 
-NAME = libmy.a
+LIB = libmy.a libmy_graphical.a
+PROJECT_NAME = project
 
 all: libmy.a
 
@@ -18,9 +19,10 @@ libmy.a:
 		cd lib/my_graphical && make
 		make clean
 		echo "libmy.a and libmy_graphical.a has been compiled."
+		make compile
 
 compile:
-		gcc -o project *.c -I include/ -L ./ -lmy -lmy_graphical \
+		gcc -o $(PROJECT_NAME) *.c -I include/ -L ./ -lmy -lmy_graphical \
 		-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
 		-lcsfml-network
 
@@ -30,8 +32,8 @@ clean:
 
 fclean: clean
 		rm -f a.out
-		rm -f $(NAME)
-		rm -f libmy_graphical.a
+		rm -f $(PROJECT_NAME)
+		rm -f $(LIB)
 		rm -f *~
 		rm -f lib/my/libmy.a
 		rm -f lib/my_graphical/libmy_graphical.a
