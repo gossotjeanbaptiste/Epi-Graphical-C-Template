@@ -15,7 +15,7 @@ start :
 
 libmy.a:
 		cd lib/my && make
-		cd ../.. 
+		cd ../..
 		cd lib/my_graphical && make
 		make clean
 		echo "libmy.a and libmy_graphical.a has been compiled."
@@ -23,6 +23,11 @@ libmy.a:
 
 compile:
 		gcc -o $(PROJECT_NAME) *.c -I include/ -L ./ -lmy -lmy_graphical \
+		-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
+		-lcsfml-network
+
+segfault :
+		gcc -o $(PROJECT_NAME) -g *.c -I include/ -L ./ -lmy -lmy_graphical \
 		-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
 		-lcsfml-network
 
