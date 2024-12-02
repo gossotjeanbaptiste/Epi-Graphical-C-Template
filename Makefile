@@ -12,6 +12,8 @@ all: libmy.a
 
 start :
 		mv gitignore.txt .gitignore
+		cd src
+		mv project.c $(PROJECT_NAME).c
 
 libmy.a:
 		cd lib/my && make
