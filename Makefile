@@ -6,14 +6,13 @@
 ##
 
 LIB = libmy.a libmy_graphical.a
-PROJECT_NAME = project
+PROJECT_NAME = my_radar
 
 all: libmy.a
 
 start :
 		mv gitignore.txt .gitignore
-		cd src
-		mv project.c $(PROJECT_NAME).c
+		mv src/project.c src/$(PROJECT_NAME).c
 
 libmy.a:
 		cd lib/my && make
@@ -26,7 +25,7 @@ libmy.a:
 compile:
 		gcc -o $(PROJECT_NAME) *.c -I include/ -L ./ -lmy -lmy_graphical \
 		-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
-		-lcsfml-network
+		-lcsfml-network -Wall -Wextra -Wunused -Wimplicit
 
 segfault :
 		gcc -o $(PROJECT_NAME) -g *.c -I include/ -L ./ -lmy -lmy_graphical \
