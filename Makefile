@@ -6,11 +6,15 @@
 ##
 
 LIB = libmy.a libmy_graphical.a
-PROJECT_NAME = bsmy_radar
+PROJECT_NAME = project
 MY_LIB = -lmy -lmy_graphical
 CSFML_LIB = -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
 -lcsfml-system -lcsfml-network
-FLAGS = -Wall -Wextra -Wimplicit
+FLAGS = -Wall -Wextra -Wimplicit -O3
+LIB_COMP = -L ./ $(MY_LIB)
+INCL = -I include/
+SRC = $(wildcard *.c) $(wildcard src/*.c)
+OBJ = $(SRC:.c=.o)
 
 all: libmy.a compile
 
@@ -23,20 +27,19 @@ libmy.a:
 		cd ../..
 		cd lib/my_graphical && make
 		make clean
-		echo "libmy.a and libmy_graphical.a has been compiled."
+		@echo "libmy.a and libmy_graphical.a has been compiled."
 		make compile
 
-compile:
-		gcc -o $(PROJECT_NAME) *.c src/*.c -I include/ -L ./ $(MY_LIB) \
-		$(CSFML_LIB) $(FLAGS)
+compile: $(OBJ)
+		gcc -o $(PROJECT_NAME) $(OBJ) $(INCL) $(LIB_COMP) $(CSFML_LIB) $(FLAGS)
 
-segfault :
-		gcc -o $(PROJECT_NAME) -g *.c src/*.c -I include/ -L ./ $(MY_LIB) \
-		$(CSFML_LIB) $(FLAGS)
+segfault : $(OBJ)
+		gcc -o $(PROJECT_NAME) -g $(OBJ) $(INCL) $(LIB_COMP) $(CSFML_LIB) \
+		$(FLAGS)
 
 clean:
 		cd lib/my && make clean
-		rm -f *.o
+		rm -f $(OBJ)
 
 fclean: clean
 		rm -f a.out
@@ -52,12 +55,15 @@ fclean: clean
 		rm -f *.gcda
 		rm -f unit_tests
 		rm -f *.out
-		echo "Everything has been cleaned, do make for have a \
+		@echo "Everything has been cleaned, do make for have a \
 new libmy and compilation"
 
 re: fclean all
 
 cs: fclean
+		clear
+		@echo "Everything has been cleaned, do make for have a \
+new libmy and compilation"
 		coding-style . .
 		cat coding-style-reports.log
 		rm -f coding-style-reports.log

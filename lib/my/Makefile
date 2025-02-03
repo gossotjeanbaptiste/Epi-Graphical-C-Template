@@ -66,7 +66,11 @@ SRC 	= 	mini_printf.c 	\
 		my_swap.c 	\
 		swap_index.c 	\
 		my_str_to_word_array.c 	\
-		my_show_word_array.c
+		my_show_word_array.c 	\
+		my_strtok.c 	\
+		my_atoi.c 	\
+		mini_printf_handle_pointer_p.c 	\
+		free_word_array.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -76,7 +80,6 @@ $(NAME):	$(OBJ)
 	ar rc $(NAME) $(OBJ)
 	mv $(NAME) ../../
 	cp my.h ../../include/
-	rm -f $(OBJ)
 
 clean:
 	rm -f $(OBJ)

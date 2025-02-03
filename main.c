@@ -12,9 +12,7 @@
 
 int main(int ac, char **av)
 {
-    if (ac == 1) {
-        var_declaration();
-    } else if (av[1][0] == '-' && av[1][1] == 'h') {
+    if (av[1][0] == '-' && av[1][1] == 'h') {
         mini_printf(MAG"Project: \n"
         BRED"\tGame type : To complete \n"
         BLU"\tInspired Game : Is there an inspired game ? \n"
