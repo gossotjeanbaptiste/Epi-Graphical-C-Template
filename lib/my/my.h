@@ -9,6 +9,9 @@
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #ifndef MY_H
     #define MY_H
