@@ -24,17 +24,17 @@ start :
 
 libmy.a:
 		cd lib/my && make
+		mv lib/my/libmy.a ./ && cp lib/my/my.h include
 		cd ../..
 		cd lib/my_graphical && make
-		make clean
 		@echo "libmy.a and libmy_graphical.a has been compiled."
-		make compile
 
 compile: $(OBJ)
 		gcc -o $(PROJECT_NAME) $(OBJ) $(INCL) $(LIB_COMP) $(CSFML_LIB) $(FLAGS)
 
 segfault : $(OBJ)
-		gcc -o $(PROJECT_NAME) -g $(OBJ) $(INCL) $(LIB_COMP) $(CSFML_LIB) \
+		make libmy.a
+		gcc -o $(PROJECT_NAME) -g $(SRC) $(INCL) $(LIB_COMP) $(CSFML_LIB) \
 		$(FLAGS)
 
 clean:
