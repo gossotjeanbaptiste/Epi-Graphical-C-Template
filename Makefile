@@ -24,8 +24,9 @@ start :
 
 libmy.a:
 		cd lib/my && make
-		mv lib/my/libmy.a ./ && cp lib/my/my.h include
-		cd ../..
+		mv lib/my/libmy.a ./
+		rm -f include/my.h
+		cp lib/my/my.h include/
 		cd lib/my_graphical && make
 		@echo "libmy.a and libmy_graphical.a has been compiled."
 
