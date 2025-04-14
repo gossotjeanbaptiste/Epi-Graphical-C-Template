@@ -5,16 +5,17 @@
 ## compiles libmy
 ##
 
-LIB = libmy.a libmy_graphical.a
+LIB = libmy.a
 PROJECT_NAME = project
-MY_LIB = -lmy -lmy_graphical
+MY_LIB = -lmy
+CFLAGS = -Wall -Wextra -Wunused -Wimplicit -O3
+SRC = $(wildcard *.c) $(wildcard src/*.c)
 CSFML_LIB = -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
 -lcsfml-system -lcsfml-network
-FLAGS = -Wall -Wextra -Wimplicit -O3
-LIB_COMP = -L ./ $(MY_LIB)
-INCL = -I include/
-SRC = $(wildcard *.c) $(wildcard src/*.c)
+SRC_SEGV = $(wildcard *.c) $(wildcard src/*.c) $(wildcard lib/my/*.c)
 OBJ = $(SRC:.c=.o)
+INCL = -I include/
+LIB_C = -L ./ $(MY_LIB) $(CSFML_LIB)
 
 all: libmy.a compile
 
@@ -27,16 +28,10 @@ libmy.a:
 		mv lib/my/libmy.a ./
 		rm -f include/my.h
 		cp lib/my/my.h include/
-		cd lib/my_graphical && make
-		@echo "libmy.a and libmy_graphical.a has been compiled."
+		@echo "libmy.a has been compiled."
 
 compile: $(OBJ)
-		gcc -o $(PROJECT_NAME) $(OBJ) $(INCL) $(LIB_COMP) $(CSFML_LIB) $(FLAGS)
-
-segfault : $(OBJ)
-		make libmy.a
-		gcc -o $(PROJECT_NAME) -g $(SRC) $(INCL) $(LIB_COMP) $(CSFML_LIB) \
-		$(FLAGS)
+		gcc -o $(PROJECT_NAME) $(OBJ) $(INCL) $(LIB_C) $(CFLAGS)
 
 clean:
 		cd lib/my && make clean
@@ -44,11 +39,11 @@ clean:
 
 fclean: clean
 		rm -f a.out
-		rm -f $(PROJECT_NAME)
 		rm -f $(LIB)
+		rm -f $(PROJECT_NAME)
 		rm -f *~
+		rm -f src/*~
 		rm -f lib/my/libmy.a
-		rm -f lib/my_graphical/libmy_graphical.a
 		rm -f lib/my/*.o
 		rm -f lib/my/*~
 		rm -f coding-style-reports.log
@@ -56,6 +51,7 @@ fclean: clean
 		rm -f *.gcda
 		rm -f unit_tests
 		rm -f *.out
+		rm -f *#
 		@echo "Everything has been cleaned, do make for have a \
 new libmy and compilation"
 
@@ -63,7 +59,8 @@ re: fclean all
 
 cs: fclean
 		clear
-		@echo "Everything has been cleaned, do make for have a \
+		@echo "All none compliant file for coding style \
+has been cleaned, do make for have a \
 new libmy and compilation"
 		coding-style . .
 		cat coding-style-reports.log
@@ -75,11 +72,16 @@ unit_tests: fclean
 			-L ./ -lmy -lcriterion --coverage
 
 
-tests_run:
+tests_run: unit_tests
 		./unit_tests
 		gcovr --exclude tests/
 		gcovr --exclude tests/ --branches
 		make fclean
 
+segfault:
+		gcc -o $(PROJECT_NAME) -g $(SRC_SEGV) $(INCL) $(CFLAGS) $(CSFML_LIB)
+
+printf:
+		grep -Rn printf
 
 .PHONY: cs all clean fclean re
