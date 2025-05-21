@@ -5,9 +5,9 @@
 ## compiles libmy
 ##
 
-LIB = libmy.a
+LIB = libmy.a libmy_graphical.a
 PROJECT_NAME = project
-MY_LIB = -lmy
+MY_LIB = -lmy -lmy_graphical
 CFLAGS = -Wall -Wextra -Wunused -Wimplicit -O3
 SRC = $(wildcard *.c) $(wildcard src/*.c)
 CSFML_LIB = -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio \
@@ -28,13 +28,15 @@ libmy.a:
 		mv lib/my/libmy.a ./
 		rm -f include/my.h
 		cp lib/my/my.h include/
-		@echo "libmy.a has been compiled."
+		cd lib/my_graphical && make
+		@echo "libmy.a and libmy_graphical.a has been compiled."
 
 $(PROJECT_NAME): $(OBJ)
 		gcc -o $(PROJECT_NAME) $(OBJ) $(INCL) $(LIB_C) $(CFLAGS)
 
 clean:
 		cd lib/my && make clean
+		cd lib/my_graphical && make clean
 		rm -f $(OBJ)
 
 fclean: clean
